@@ -1,0 +1,9 @@
+jsSyncAsync/node_modules/*
+jsSyncAsync/package.json
+jsSyncAsync/package-lock.json
+jsSyncAsync/top20/node_modules/*
+jsSyncAsync/top20/package.json
+jsSyncAsync/top20/package-lock.json
+json-server-exam/node_modules/*
+json-server-exam/package.json
+json-server-exam/package-lock.json
