@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <div id="app">{{message}}</div>
+
+    <script>
+      const { createApp } = Vue;
+      // 비구조 할당 : 배열, 객체 속성을 해제하여 개별 변수에 값을 담는 JS 표현식
+      createApp({
+        data() {
+          return {
+            message: 'Hello VueJS!',
+          };
+        },
+      }).mount('#app');
+    </script>
+  </body>
+</html>
