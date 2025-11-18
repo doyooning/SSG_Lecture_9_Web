@@ -9,14 +9,37 @@ export default {
     TodoInput,
     TodoList,
   },
+
+  data() {
+    return {
+      todo: [],
+      current: 'all',
+    };
+  },
+
+  methods: {
+    addTodo(inputMsg) {
+      const item = {
+        id: Math.random(), // todo id를 고유값으로 랜덤 저장
+        msg: inputMsg, // 할일 텍스트
+        complete: false, // 할일 완료 여부
+      };
+      this.todo.push(item);
+    },
+    updateTab(tab) {
+      this.current = tab;
+    },
+  },
 };
 </script>
 
 <template>
   <div class="todo">
-    <TodoHeader />
+    <!-- TodoInput으로 전달받은 현재 todo TodoHeader에 전달 -->
+
+    <TodoHeader :current="current" @update-tab="updateTab" />
     <TodoList />
-    <TodoInput />
+    <TodoInput @add-todo="addTodo" />
   </div>
 </template>
 
