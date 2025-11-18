@@ -40,4 +40,5 @@ export default {
 </script>
 <template>
   <FirstChild v-if="visible" />
+  <h1 style="color: red; font-style: italic">TEST</h1>
 </template>
