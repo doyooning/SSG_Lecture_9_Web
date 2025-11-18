@@ -22,9 +22,10 @@ export default {
       const item = {
         id: Math.random(), // todo id를 고유값으로 랜덤 저장
         msg: inputMsg, // 할일 텍스트
-        complete: false, // 할일 완료 여부
+        completed: false, // 할일 완료 여부
       };
       this.todo.push(item);
+      localStorage.setItem('todos', JSON.stringify(this.todo));
     },
     updateTab(tab) {
       this.current = tab;
@@ -32,12 +33,21 @@ export default {
 
     deleteTodo(id) {
       this.todo = this.todo.filter((v) => v.id !== id);
+      localStorage.setItem('todos', JSON.stringify(this.todo));
     },
 
     updateTodo(id) {
       this.todo = this.todo.map((v) =>
         v.id === id ? { ...v, completed: !v.completed } : v
       );
+      localStorage.setItem('todos', JSON.stringify(this.todo));
+    },
+
+    editTodo(id, inputMsg) {
+      this.todo = this.todo.map((v) =>
+        v.id === id ? { ...v, msg: inputMsg } : v
+      );
+      localStorage.setItem('todos', JSON.stringify(this.todo));
     },
   },
 
@@ -63,6 +73,7 @@ export default {
       :computed-todo="computedTodo"
       @delete-todo="deleteTodo"
       @update-todo="updateTodo"
+      @edit-todo="editTodo"
     />
     <TodoInput @add-todo="addTodo" />
   </div>

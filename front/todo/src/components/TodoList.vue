@@ -11,12 +11,34 @@ export default {
     },
   },
 
+  data() {
+    return {
+      editingId: null, // 현재 편집 중인 항목의 id
+      editingMsg: '', // 편집 중인 텍스트
+    };
+  },
+
   methods: {
     deleteTodo(id) {
       this.$emit('delete-todo', id);
     },
     updateTodo(id) {
       this.$emit('update-todo', id);
+    },
+    editTodo(id, msg) {
+      this.editingId = id;
+      this.editingMsg = msg;
+    },
+    saveTodo(id) {
+      if (this.editingMsg.trim()) {
+        this.$emit('edit-todo', id, this.editingMsg);
+      }
+      this.editingId = null;
+      this.editingMsg = '';
+    },
+    cancelEdit() {
+      this.editingId = null;
+      this.editingMsg = '';
     },
   },
 };
@@ -42,11 +64,39 @@ export default {
         :for="`chk${item.id.toString()}`"
         class="todo__checkbox-label"
       ></label>
-      <span class="todo__item-text">{{ item.msg }}</span>
+      <!-- 편집 모드가 아닐 때: 일반 텍스트 표시 -->
+      <span v-if="editingId !== item.id" class="todo__item-text">{{
+        item.msg
+      }}</span>
+
+      <!-- 편집 모드일 때: 입력창 표시 -->
+      <input
+        v-else
+        v-model="editingMsg"
+        type="text"
+        class="todo__item-input"
+        @keydown.enter="saveTodo(item.id)"
+        @keydown.esc="cancelEdit"
+      />
+
       <span
         class="material-symbols-outlined todo__delete-icon"
         @click="deleteTodo(item.id)"
         >delete
+      </span>
+      <!-- 편집: edit, 편집내용저장: save -->
+      <span
+        v-if="editingId !== item.id"
+        class="material-symbols-outlined todo__edit-icon"
+        @click="editTodo(item.id)"
+        >edit
+      </span>
+      <span
+        v-else
+        class="material-symbols-outlined todo__save-icon"
+        @click="saveTodo(item.id)"
+      >
+        check
       </span>
     </div>
     <!-- 할 일 목록이 없을 때 -->
