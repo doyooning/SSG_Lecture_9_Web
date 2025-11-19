@@ -26,7 +26,7 @@ export default {
         done: false,
       };
       this.todos.push(item);
-      localStorage.setItem('todos', JSON.stringify(this.todos));
+      this.saveTodo();
     },
     // 상단 탭 전환
     updateTab(tab) {
@@ -36,7 +36,7 @@ export default {
     deleteTodo(id) {
       // filter()로 todos 배열을 최신화 - 해당 id가 포함x
       this.todos = this.todos.filter((v) => v.id !== id);
-      localStorage.setItem('todos', JSON.stringify(this.todos));
+      this.saveTodo();
     },
     // todo 상태 업데이트(체크박스 작동)
     updateTodo(id) {
@@ -44,14 +44,18 @@ export default {
       this.todos = this.todos.map((v) =>
         v.id === id ? { ...v, done: !v.done } : v
       );
-      localStorage.setItem('todos', JSON.stringify(this.todos));
+      this.saveTodo();
     },
     // todo 내용 재작성 수정
     editTodo(id, memo) {
       this.todos = this.todos.map((v) =>
         v.id === id ? { ...v, content: memo } : v
       );
-      localStorage.setItem('todos', JSON.stringify(this.todos));
+      this.saveTodo();
+    },
+    clearTodo() {
+      this.todos = [];
+      this.saveTodo();
     },
     // 현재 todos를 localStorage에 저장
     saveTodo() {
@@ -91,6 +95,7 @@ export default {
     <TodoList
       :todo-init="todoInit"
       :filtered-todo="filteredTodo"
+      @clear-todo="clearTodo"
       @delete-todo="deleteTodo"
       @update-todo="updateTodo"
       @edit-todo="editTodo"
