@@ -1,25 +1,12 @@
 <script setup>
-import { computed, reactive, defineEmits, defineProps } from 'vue';
+import { defineEmits, defineProps } from 'vue';
 
 const props = defineProps({ name: String });
-const emit = defineEmits(['greet']);
+const emits = defineEmits(['greet']);
 
-// const name = reactive({ name: String });
-const sendGreeting = computed(() => {
-  'greet', `Hello, ${name.name}!`;
-});
-
-// export default {
-//   props: {
-//     name: String,
-//   },
-//   emits: ['greet'],
-//   methods: {
-//     sendGreeting() {
-//       this.$emit('greet', `Hello, ${this.name}!`);
-//     },
-//   },
-// };
+const sendGreeting = () => {
+  emits('greet', `Hello, ${props.name}!`);
+};
 </script>
 <template>
   <div>
