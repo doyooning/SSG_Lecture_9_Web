@@ -101,7 +101,7 @@ export default {
       @edit-todo="editTodo"
     />
 
-    <TodoInput @add-todo="addTodo" />
+    <TodoInput @add-todo="addTodo" @clear-todo="clearTodo" />
   </div>
 </template>
 <style></style>

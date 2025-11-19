@@ -7,17 +7,23 @@ export default {
     };
   },
 
-  emits: ['add-todo'],
+  emits: ['add-todo', 'clear-todo'],
   methods: {
     addTodo() {
       this.$emit('add-todo', this.memo);
       this.memo = '';
+    },
+    clearTodo() {
+      this.$emit('clear-todo');
     },
   },
 };
 </script>
 <template>
   <div class="todo__input">
+    <button class="todo__input-btn clearBtn" @click="clearTodo">
+      전체<br />삭제
+    </button>
     <input
       v-model="memo"
       type="text"
