@@ -2,13 +2,15 @@
 // 입력값을 반응형으로 관리하기 위해 ref 사용
 import { ref, defineProps } from 'vue';
 
-// greet: input과 v-model로 양방향 바인딩되는 문자열 상태
-const greet = ref('');
-
-defineProps({
+const props = defineProps({
   color: String,
   isActive: Boolean,
+  userInfo: Object,
+  defaultMsg: String,
 });
+
+// greet: input과 v-model로 양방향 바인딩되는 문자열 상태
+const greet = ref(props.defaultMsg);
 </script>
 
 <template>
@@ -22,7 +24,7 @@ defineProps({
               - 부모에게 'greetingEvent'라는 이름의 커스텀 이벤트를 보낸다.
               - payload(데이터)는 없음.
             -->
-      <button @click="$emit('greetingEvent')" :disabled="!isActive">
+      <button @click="$emit('greetingEvent')" :disabled="isActive">
         인사해요
       </button>
     </div>
@@ -42,10 +44,32 @@ defineProps({
                 두 번째 인자로 greet 값을 payload로 함께 보냄.
               - 템플릿 안이라서 ref 자동 언래핑 → greet는 greet.value로 전달된다고 보면 됨.
             -->
-      <button @click="$emit('greetingArgEvent', greet)">
+      <button
+        @click="
+          greet.length > 0
+            ? $emit('greetingArgEvent', greet)
+            : $emit('error-event')
+        "
+      >
         인사해요(인자전달)
       </button>
-      <button @click="$emit('toggleEvent', greet)">토글하기</button>
+      <button @click="$emit('toggleEvent')">토글하기!</button>
+      <button
+        @click="
+          $emit('multi-event', {
+            msg: greet,
+            timestamp: Date.now(),
+            length: greet.length,
+          })
+        "
+      >
+        메시지 전송하기!
+      </button>
+    </div>
+    <div class="div-user">
+      <h3>{{ userInfo.name }}</h3>
+      <h3>{{ userInfo.age }}</h3>
+      <h3>{{ userInfo.major }}</h3>
     </div>
   </div>
 </template>

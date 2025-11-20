@@ -1,36 +1,18 @@
 <script setup>
 import { ref } from 'vue';
-import AppPropsLiteral from './components/props/AppPropsLiteral.vue';
-import AppPropsObject from './components/props/AppPropsObject.vue';
-import ComponentEmitEventTemplate from './components/props/ComponentEmitEventTemplate.vue';
-import ComponentEmitEventScriptSetup from './components/props/ComponentEmitEventScriptSetup.vue';
 
-const view = ref('');
+import MenuBar from './components/props/MenuBar.vue';
+
+const arr = ref([
+  { key: 'literal', label: 'Props Literal Demo' },
+  { key: 'object', label: 'Props Object Demo' },
+  { key: 'template', label: 'Event Template Demo' },
+  { key: 'script', label: 'Event Script Setup Demo' },
+]);
 </script>
 <template>
   <div class="container">
-    <TheHeading />
-    <div class="menu">
-      <button :class="{ active: view === 'literal' }" @click="view = 'literal'">
-        Props Literal
-      </button>
-      <button :class="{ active: view === 'object' }" @click="view = 'object'">
-        Props Object
-      </button>
-      <button
-        :class="{ active: view === 'template' }"
-        @click="view = 'template'"
-      >
-        Component Events (template)
-      </button>
-      <button :class="{ active: view === 'script' }" @click="view = 'script'">
-        Component Events (script setup)
-      </button>
-    </div>
-    <AppPropsLiteral v-if="view === 'literal'" view-title="좋아하는 과일은?" />
-    <AppPropsObject v-if="view === 'object'" view-title="좋아하는 과일은?" />
-    <ComponentEmitEventTemplate v-if="view === 'template'" />
-    <ComponentEmitEventScriptSetup v-if="view === 'script'" />
+    <MenuBar :arr="arr" />
   </div>
 </template>
 

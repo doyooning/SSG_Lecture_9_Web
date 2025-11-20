@@ -28,15 +28,27 @@ const greetArg = (greet) => {
 };
 
 const messages = ref([]);
+const isActive = ref(true);
+const userInfo = {
+  name: '신세계',
+  age: 20,
+  major: 'Computer Science',
+};
 
 const insertGreeting = (greet) => {
   messages.value.push(greet);
 };
 
-const toggle = (greet) => {
-  if (greet == '') {
-    message.value = '비활성화 상태입니다';
-  }
+const toggle = () => {
+  message.value = isActive.value ? '활성화 상태입니다' : '비활성화 상태입니다';
+  isActive.value = !isActive.value;
+};
+
+const multiEvent = ref(null);
+
+const errorMessage = ref('');
+const errorEvent = () => {
+  errorMessage.value = '입력값이 비어있습니다!';
 };
 </script>
 
@@ -45,10 +57,11 @@ const toggle = (greet) => {
     <!-- 부모가 받은 props 출력 -->
     <h1>{{ viewTitle }}</h1>
     <ul>
-      <li v-for="(m, idx) in messages" :key="idx">
-        {{ m }}
+      <li v-for="(msg, index) in messages" :key="index">
+        {{ msg }}
       </li>
     </ul>
+    <h3 class="error-message">{{ errorMessage }}</h3>
     <!--
           자식 컴포넌트를 사용하면서
           - v-on:greeting-event="greet"
@@ -59,8 +72,9 @@ const toggle = (greet) => {
            이벤트가 안 잡힐 수 있으므로  둘 다 kebab-case(소문자-하이픈)로 통일)
         -->
     <ComponentEmitEventTemplateChild
+      defaultMsg="안녕하세요!!"
       color="pink"
-      :is-active="true"
+      :is-active="isActive"
       v-on:greeting-event="greet"
       @greeting-arg-event="
         (greet) => {
@@ -69,13 +83,24 @@ const toggle = (greet) => {
         }
       "
       v-on:toggle-event="toggle"
+      :user-info="userInfo"
+      @multi-event="(obj) => (multiEvent = obj)"
+      @error-event="errorEvent"
     />
 
     <!-- 자식 이벤트에 의해 바뀐 message 출력 -->
     <h3>{{ message }}</h3>
+    <!-- <div class="receive-msg" v-on:multi-event="multiEvent"></div> -->
+    <div v-if="multiEvent">
+      <p>메시지: {{ multiEvent.msg }}</p>
+      <p>길이: {{ multiEvent.length }}</p>
+      <p>전송시간: {{ multiEvent.timestamp }}</p>
+    </div>
   </div>
 </template>
 
 <style scoped>
-/* 현재는 스타일 없음 */
+.error-message {
+  color: red;
+}
 </style>
